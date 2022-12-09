@@ -22,6 +22,6 @@ jobs:
 
       - name: Build & Push the Docker image
         run: |
-          tag="$(data +%s)"
+          tag="$(date +%s)"
           docker build . --file Dockerfile --tag ${{secrets.DOCKER_USER}}/netatalk:$tag
           docker push ${{secrets.DOCKER_USER}}/netatalk:$tag
