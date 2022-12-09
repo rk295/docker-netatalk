@@ -38,6 +38,7 @@ RUN curl -sSL "http://ufpr.dl.sourceforge.net/project/netatalk/netatalk/${NETATA
 WORKDIR netatalk-${NETATALK_VERSION}
 
 RUN patch -p1 < /patches/cnid_mysql.patch
+RUN patch -p1 < /patches/libatalk_adouble_ad__open.patch
 RUN ./configure \
         --prefix=/usr \
         --sysconfdir=/etc \
