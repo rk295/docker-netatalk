@@ -1,6 +1,5 @@
----- a/libatalk/adouble/ad_open.c.orig	2022-05-01 19:20:45 UTC
-+--- b/libatalk/adouble/ad_open.c.orig	2022-03-22 04:44:25 UTC
- +++ libatalk/adouble/ad_open.c
+---- a/libatalk/adouble/ad_open.c	2022-05-01 19:20:45 UTC
++--- b/libatalk/adouble/ad_open.c	2022-03-22 04:44:25 UTC
 -@@ -1637,6 +1637,10 @@ void *ad_entry(const struct adouble *ad, int eid)
 +@@ -1574,6 +1574,8 @@ static bool ad_entry_check_size(uint32_t eid,
 +     uint32_t required_len;
