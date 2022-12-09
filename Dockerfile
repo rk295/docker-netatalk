@@ -42,7 +42,6 @@ RUN ./configure \
         --prefix=/usr \
         --sysconfdir=/etc \
         --with-init-style=debian-systemd \
-        --without-libevent \
         --without-tdb \
         --with-cracklib \
         --enable-krbV-uam \
