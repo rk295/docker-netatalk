@@ -2,20 +2,37 @@
 
 An container serving [Apple Filing Protocol](https://en.wikipedia.org/wiki/Apple_Filing_Protocol) file sharing, Tracker (search/spotlight integration), and mDNS server for service discovery.
 
+## News
+
+This was originally forked from [cptactionhank/docker-netatalk](https://github.com/cptactionhank/docker-netatalk), it has been updated with the following:
+
+* Includes the latest release of Netatalk, version 3.1.13.
+* Now builds on Ubuntu 22.04 LTS.
+* Patches some issues:
+    - Mysql bool build failure, thanks to Gentoo for fixing, [original patch](https://bugs.gentoo.org/692560).
+    - Patches a repeated crash when attempting brows a share, thanks to FreeBSD for fixing, [original patch](https://cgit.freebsd.org/ports/commit/?id=ad0b2e636d9ebf0bdcfdb30933fa0658fa657b17).
+* Entrypoint is now generally more robust and passes [ShellCheck](https://www.shellcheck.net).
+* Includes a sample [docker-compose.yml](docker-compose.yml) file if you want to use that to manage the container.
+
 ## I'm in the fast lane! Get me started
 
 To quickly get started with running an [Netatalk] container first you can run the following command:
 
 ```bash
-docker run --detach --publish 548:548 cptactionhank/netatalk:latest
+docker run --detach --publish 548:548 rk295/netatalk:latest
 ```
 
-**Important:** This does not announce the AFP service on the network; connecting to the server should be performed by Finder's `Go -> Connect Server (CMD+K)` and then typing `afp://[docker_host]`.
+**Important:** This does not announce the AFP service on the network; connecting to the server should be performed by Finder's `Go -> Connect Server (CMD+K)` and then typing `afp://[docker_host]` .
 
 Default configuration of [Netatalk] has two share called _Share_ which shares the containers `/media/share` and called _TimeMachine_ which shares the containers `/media/timemachine` mounting point. Host mounting a volume to this path will be the quickest way to start sharing files on your network.
 
 ```bash
-docker run --detach --volume [host_path]:/media/share --volume [host_path]:/media/timemachine --publish 548:548 cptactionhank/netatalk:latest
+docker run \
+    --detach \
+    --volume [host_path]:/media/share \
+    --volume [host_path]:/media/timemachine \
+    --publish 548:548 \
+    rk295/netatalk:latest
 ```
 
 ## The slower road
@@ -31,7 +48,13 @@ There are two ways of configuring the [Netatalk] which is either by mounting a c
 This is quite a simple way to change the configuration by supplying an additional docker flag when creating the container.
 
 ```bash
-docker run --detach --volume [host_path]:/etc/afp.conf --volume [host_path]:/media/share --volume [host_path]:/media/timemachine --publish 548:548 cptactionhank/netatalk:latest
+docker run \
+    --detach \
+    --volume [host_path]:/etc/afp.conf \
+    --volume [host_path]:/media/share \
+    --volume [host_path]:/media/timemachine \
+    --publish 548:548 \
+    rk295/netatalk:latest
 ```
 
 #### Container edited configuration
@@ -59,7 +82,7 @@ docker run --detach \
     --env AFP_PASSWORD=secret \
     --env AFP_UID=$(id -u) \
     --env AFP_GID=$(id -g) \
-    cptactionhank/netatalk:latest
+    rk295/netatalk:latest
 ```
 
 This replaces all occurrences of `%USER%` in `afp.conf` with `AFP_USER`
@@ -81,15 +104,17 @@ Service discovery works only when the [Avahi] daemon is on the same network as y
 
 ## Acknowledgments
 
-Thanks to @rrva for his work updating this image to [Netatalk] version 3.1.8 and slimming down this image for everyone to enjoy.
+* Thanks to [@rrva](https://github.com/rrva) for his work updating this image to [Netatalk] version 3.1.8 and slimming down this image for everyone to enjoy.
+* Thanks to [@cptactionhank](https://github.com/cptactionhank) for building on the work of [@rrva](https://github.com/rrva)!
 
 ## Contributions
 
 This image has been created with the best intentions and an expert understanding of docker, but it should not be expected to be flawless. Should you be in the position to do so, I request that you help support this repository with best-practices and other additions.
 
-If you see out of date documentation, lack of tests, etc., you can help out by either
-- creating an issue and opening a discussion, or
-- sending a pull request with modifications
+If you see out of date documentation, lack of tests, etc., you can help out by either:
+
+* creating an issue and opening a discussion, or
+* sending a pull request with modifications
 
 This work is made possible with the great services from [Docker] and [GitHub].
 
