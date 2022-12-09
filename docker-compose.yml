@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  netatalk:
+    image: rk295/netatalk:latest
+    environment:
+        TZ: 'Europe/London' # Optionally specify a timezone
+        AVAHI: 1            # Optionally announce via Avahi
+    
+    # Either expose the port or use host networking:
+    ports:
+      - "548:548"
+    # network_mode: host      # Expose port above, or use host networking
+    
+    tmpfs:
+        - /tmp
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
+    # Optional volumes:
+    # volumes:
+        # Include a custom aftp.conf from the current directory:
+        # - ./afp.conf:/etc/afp.conf
+        
+        # Optionally map in local password and group files:
+        # - /etc/passwd:/etc/passwd:ro
+        # - /etc/shadow:/etc/shadow:ro
+        # - /etc/group:/etc/group:ro
+
+        # Optionall map in some share dirs:
+        # - /data:/data
